@@ -112,7 +112,7 @@ const calculateTotalPrice = () => {
       
         <div className="logo-holder logo-3 mr-3">
           <a>
-            <h3>Advance Shopping</h3>
+            <h3>Fashion Villa</h3>
             <p>try on Enabled System</p>
           </a>
         </div>
