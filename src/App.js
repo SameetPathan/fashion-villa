@@ -1,4 +1,4 @@
-
+import './App.css';
 import Navbarcomponent from './components/Navbarcomponent';
 import FooterComponent from './components/FooterComponent';
 import ForceLogin from './components/ForceLogin';
