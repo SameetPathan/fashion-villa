@@ -44,7 +44,7 @@ export function addpets(id, name, breed,age,gender,shelyteraadhar,phonenumber,im
         price:price,
         city:city
     });
-    alert("added Successfull")
+    alert("Product added Successfull")
 }
 
 export function addorder(id, phonenumber , productname , price , address){
@@ -72,10 +72,10 @@ export function reportpets(id,status) {
                 console.error('Error Reporting: ', error);
             });
         } else {
-            console.error('Pet data not found!');
+            console.error('Product data not found!');
         }
     }).catch((error) => {
-        console.error('Error getting pet data: ', error);
+        console.error('Error getting Product data: ', error);
     });
 }
 
@@ -84,9 +84,9 @@ export function deletePet(id) {
     const petRef = ref(db, 'users/products/' + id);
   
     remove(petRef).then(() => {
-      alert('Pet deleted successfully!');
+      alert('Product deleted successfully!');
     }).catch((error) => {
-      console.error('Error deleting pet: ', error);
+      console.error('Error deleting Product: ', error);
     });
   }
 

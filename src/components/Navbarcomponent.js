@@ -18,7 +18,7 @@ function Navbarcomponent(props) {
   const [email, setemail] = useState('');
   const [address, setaddress] = useState('');
   const [phone, setphone] = useState('');
-  const [aadhar, setaadhar] = useState('');
+  const [aadhar, setaadhar] = useState('test');
   const [usertype, setusertype] = useState('');
 
 
@@ -39,7 +39,7 @@ function Navbarcomponent(props) {
 
 const calculateTotalPrice = () => {
   if(props.cartItems){
-  return props.cartItems.reduce((total, item) => total + item.price, 0);
+  return props.cartItems.reduce((total, item) => parseInt(total) + parseInt(item.price), 0);
   }
 };
 
@@ -64,6 +64,10 @@ const calculateTotalPrice = () => {
 	  }
 
     const loginhandle= async()=>{
+
+      if(phone && phone.length==10){
+
+    
 
       const db = getDatabase();
       const userRef = ref(db, 'users/' + phone);
@@ -90,6 +94,9 @@ const calculateTotalPrice = () => {
         }
         
       }  
+    }else{
+      alert("Please enter all feilds and veriy if Phone number enter correctly.")
+    }
   }
 
     function registerhandle(){
@@ -188,10 +195,7 @@ const calculateTotalPrice = () => {
             <input type="text" value={email} onChange={(e) => setemail(e.target.value)}  className="form-control" id="email" required />
           </div>
 
-          <div className="form-group">
-            <label for="aadhar" className="col-form-label">Aadharcard Number :</label>
-            <input type="text" value={aadhar} onChange={(e) => setaadhar(e.target.value)}  className="form-control" id="aadhar" required />
-          </div>
+    
 
           <div className="form-group">
             <label for="address" className="col-form-label">Full Address :</label>
@@ -238,11 +242,11 @@ const calculateTotalPrice = () => {
           
           <div className="form-group">
             <label for="aadhar" className="col-form-label">Phone Number :</label>
-            <input type="text" value={phone} onChange={(e) => setphone(e.target.value)}  className="form-control" id="phone"/>
+            <input type="text" value={phone} onChange={(e) => setphone(e.target.value)}  className="form-control" id="phone" required/>
           </div>
           <div className="form-group">
             <label for="password" className="col-form-label">Password :</label>
-            <input type="password" value={password} onChange={(e) => setpassword(e.target.value)}  className="form-control" id="password"/>
+            <input type="password" value={password} onChange={(e) => setpassword(e.target.value)}  className="form-control" id="password" required/>
           </div>
      
         </form>
@@ -262,9 +266,9 @@ const calculateTotalPrice = () => {
   <div className="modal fade" id="cart" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog">
         <div className="modal-content">
-          <div className="modal-header">
+          <div className="modal-header bgd">
             <h5 className="modal-title" id="exampleModalLabel">
-              Your Cart - Place Order
+              Your Cart / Place Order
             </h5>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -303,6 +307,13 @@ const calculateTotalPrice = () => {
                 value={address}
                 onChange={handleAddressChange}
               ></textarea>
+            </div>
+            <div className="form-group">
+              <label htmlFor="message-text" className="col-form-label">
+                Pay using Below QR code and Confirm Your Order :
+              </label>
+              <br></br>
+              <img height={100} src='qr.jpg'/>
             </div>
           </div>
           <div className="modal-footer">

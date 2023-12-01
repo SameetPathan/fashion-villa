@@ -24,6 +24,7 @@ function AdminHome() {
   const [price, setPrice] = useState("");
   const [city, setCity] = useState("");
   const [phonenumber, setPhone] = useState("");
+  const [namef,setfilename]=useState("");
 
   const [order,setOrder]=useState([]);
 
@@ -57,8 +58,10 @@ function AdminHome() {
 
     const handleImageChange = (event) => {
       const file = event.target.files[0];
+      debugger
       if (file) {
         setImageUrl(file);
+        setfilename(file.name)
         alert("Image Saved")
       }
     };
@@ -112,7 +115,6 @@ function AdminHome() {
               <th scope="col">Report</th>
               <th scope="col">Product Name</th>
               <th scope="col">Product Information</th>
-              <th scope="col">Product City</th>
               <th scope="col">Product Price</th>
               <th scope="col">Product Quantity</th>
               <th scope="col">Report Trusted</th>
@@ -127,7 +129,6 @@ function AdminHome() {
               <td>{pet.report ? "Reported":"Trusted"}</td>
               <td>{pet.name}</td>
               <td>{pet.breed}</td>
-              <td>{pet.city}</td>
               <td>{pet.price}</td>
               <td>{pet.age}</td>
               <td><button type="button" class="btn btn-outline-success" onClick={()=>{reportshelter(pet.id)}}>Trusted</button></td>
@@ -253,32 +254,7 @@ function AdminHome() {
                 />
               </div>
              
-              <div className="mb-3">
-                <label htmlFor="shelterAadhar" className="form-label">
-                  Your Aadhar
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="shelterAadhar"
-                  value={shelterAadhar}
-                  onChange={(event) => setShelterAadhar(event.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="shelterAadhar" className="form-label">
-                 Optional Address
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="shelterAadhar"
-                  value={phonenumber}
-                  onChange={(event) => setPhone(event.target.value)}
-                  required
-                />
-              </div>
+      
 
 
               <div className="mb-3">
@@ -294,21 +270,10 @@ function AdminHome() {
                   required
                 />
               </div>
-              <div className="mb-3">
-                <label htmlFor="city" className="form-label">
-                  City
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="city"
-                  value={city}
-                  onChange={(event) => setCity(event.target.value)}
-                  required
-                />
-              </div>
-
+            
+              <strong className='m-1 text-success'>{namef?"Uploaded File : ":""}{namef}</strong>
               <div class="custom-file">
+              
                 <input type="file" class="custom-file-input" onChange={handleImageChange} id="customFile"/>
                 <label class="custom-file-label" for="customFile">Choose file</label>
               </div>

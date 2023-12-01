@@ -32,12 +32,11 @@ function UserHome(props) {
   const [stream, setStream] = useState(null);
   const [imgsrc, setimgsrc] = useState("");
 
-  const [position, setPosition] = useState({ top: "60", left: "50%" });
+  const [position, setPosition] = useState({ top: "60%", left: "50%",height:"80%" });
   const [size, setSize] = useState({ width: "80%", height: "80%" });
 
   const handleMove = (direction) => {
-    debugger;
-    let { top, left } = position;
+    let { top, left,height } = position;
     const moveStep = 10; // Change this value as needed
 
     switch (direction) {
@@ -45,7 +44,10 @@ function UserHome(props) {
         top = `${parseFloat(top) - moveStep}%`;
         break;
       case "down":
-        top = `${parseFloat(top) + moveStep}%`;
+        if(`${parseFloat(top) + moveStep}%`<"70%"){
+          top = `${parseFloat(top) + moveStep}%`;
+        }
+        
         break;
       case "left":
         left = `${parseFloat(left) - moveStep}%`;
@@ -53,32 +55,20 @@ function UserHome(props) {
       case "right":
         left = `${parseFloat(left) + moveStep}%`;
         break;
-      default:
-        break;
-    }
-
-    setPosition({ top, left });
-  };
-
-  const handleZoom = (action) => {
-    let { width, height } = size;
-    const zoomStep = 15; // Change this value as needed
-
-    switch (action) {
       case "in":
-        width = `${parseFloat(width) + zoomStep}%`;
-        height = `${parseFloat(height) + zoomStep}%`;
+        height = `${parseFloat(height) + moveStep}%`;
         break;
       case "out":
-        width = `${parseFloat(width) - zoomStep}%`;
-        height = `${parseFloat(height) - zoomStep}%`;
-        break;
+        height = `${parseFloat(height) - moveStep}%`;
+          break;
       default:
         break;
     }
 
-    setSize({ width, height });
+    setPosition({ top, left,height });
   };
+
+
 
   const addToCart = (product) => {
     setCartItems([...cartItems, product]);
@@ -194,8 +184,7 @@ function UserHome(props) {
               top: position.top,
               left: position.left,
               transform: "translate(-50%, -50%)",
-              maxWidth: "80%",
-              maxHeight: "80%",
+              height: position.height,
             }}
           />
         </div>
@@ -203,7 +192,7 @@ function UserHome(props) {
 
       {isCameraOn && (
 
-      <div className="text-center">
+      <div className="text-center mt-3 mb-3">
         <button onClick={() => handleMove("up")}>
           <FontAwesomeIcon icon={faArrowUp} />
         </button>
@@ -216,10 +205,10 @@ function UserHome(props) {
         <button onClick={() => handleMove("right")}>
           <FontAwesomeIcon icon={faArrowRight} />
         </button>
-        <button onClick={() => handleZoom("in")}>
+        <button onClick={() => handleMove("in")}>
           <FontAwesomeIcon icon={faSearchPlus} />
         </button>
-        <button onClick={() => handleZoom("out")}>
+        <button onClick={() => handleMove("out")}>
           <FontAwesomeIcon icon={faSearchMinus} />
         </button>
       </div>
@@ -247,11 +236,11 @@ function UserHome(props) {
           </div>
         </div>
 
-        <div className="d-flex flex-wrap justify-content-center">
+        <div  className="d-flex flex-wrap justify-content-center">
           {filteredPets.map((pet) => (
             <div
               className="card m-3 form-bg form-container"
-              style={{ width: "300px" }}
+              style={{ width: "300px"  }}
               key={pet.id}
             >
               <div class="card text-center">
@@ -275,7 +264,7 @@ function UserHome(props) {
                     width="100"
                     height="250"
                   />
-                  <p class="card-text">{pet.breed}</p>
+                  <p class="card-text" style={{height:"40px"}}>{pet.breed.substring(0, 50)}...</p>
                 </div>
                 <div class="card-footer text-muted">Price : ${pet.price}</div>
               </div>
