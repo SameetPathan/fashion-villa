@@ -20,6 +20,90 @@ function Navbarcomponent(props) {
   const [phone, setphone] = useState('');
   const [aadhar, setaadhar] = useState('test');
   const [usertype, setusertype] = useState('');
+  const [commonError, setcommonError] = useState('');
+  const [commonErrorS, setcommonErrorS] = useState(false);
+
+  const setusername2 = (value) => {
+    setusername(value);
+    if (value.length >= 8) {
+      setusername(value);
+      setcommonError("")
+      setcommonErrorS(false);
+    } else {
+      setcommonErrorS(true);
+      setcommonError('Username should be at least 8 characters long.');
+    }
+  };
+  
+  const setpassword2 = (value) => {
+    setpassword(value);
+    
+    if (value.length >= 6) {
+      setpassword(value);
+      setcommonError("")
+      setcommonErrorS(false); 
+    } else {
+      setcommonErrorS(true);
+      setcommonError('Password should be at least 6 characters long.');
+    }
+  };
+  
+  const setemail2 = (value) => {
+    setemail(value);
+    // Example validation: Basic email format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(value)) {
+      setemail(value);
+      setcommonError("")
+      setcommonErrorS(false); // Assuming you have an emailError state to manage error display
+    } else {
+      setcommonErrorS(true);
+      setcommonError('Please enter a valid email address.');
+    }
+  };
+  
+  const setaddress2 = (value) => {
+    setaddress(value);
+    // Example validation: Address should not be empty
+    if (value.trim() !== '') {
+      setaddress(value);
+      setcommonError("")
+      setcommonErrorS(false); // Assuming you have an addressError state to manage error display
+    } else {
+      setcommonErrorS(true);
+      setcommonError('Please enter your address.');
+    }
+  };
+  
+  const setphone2 = (value) => {
+    setphone(value);
+    // Example validation: Phone number should be 10 digits
+    const phoneRegex = /^\d{10}$/;
+    if (phoneRegex.test(value)) {
+      setphone(value);
+      setcommonError("")
+      setcommonErrorS(false); // Assuming you have a phoneError state to manage error display
+    } else {
+      setcommonErrorS(true);
+      setcommonError('Please enter a valid 10-digit phone number.');
+    }
+  };
+  
+  const setaadhar2 = (value) => {
+    setaadhar(value);
+     
+    // Example validation: Aadhar number should be 12 digits
+    const aadharRegex = /^\d{12}$/;
+    if (aadharRegex.test(value)) {
+      setaadhar(value);
+      setcommonError("")
+      setcommonErrorS(false); // Assuming you have an aadharError state to manage error display
+    } else {
+      setcommonErrorS(true);
+      setcommonError('Please enter a valid 12-digit Aadhar number.');
+    }
+  };
+  
 
 
   const [phonec] = useState(''); // Assuming phonec is received from somewhere
@@ -45,12 +129,18 @@ const calculateTotalPrice = () => {
 
 
   const handleCheckout=()=>{
-    alert("Successfuly Placed Order.")
+    if(phone && address){
+      alert("Successfuly Placed Order.")
+    }else{
+      alert("Unable to place order.")
+    }
+   
   }
 
 
   const logout=async()=>{
 		try {
+      setcommonError("")
 			props.setCurrentAccount("");
       props.setCurrentusertype("");
       Cookies.remove('aadharcard');
@@ -65,10 +155,10 @@ const calculateTotalPrice = () => {
 
     const loginhandle= async()=>{
 
-      if(phone && phone.length==10){
+      if(phone && phone.length==10 && usertype!=""){
 
     
-
+        setcommonError("")
       const db = getDatabase();
       const userRef = ref(db, 'users/' + phone);
       const userSnapshot = await get(userRef);
@@ -76,6 +166,7 @@ const calculateTotalPrice = () => {
 
       if (!userData) {
         alert("Login Failed ")
+        setcommonError("")
       }
       else{
         if(userData.password===password && userData.usertype===usertype){
@@ -91,22 +182,25 @@ const calculateTotalPrice = () => {
         else{
           setShowModal1(false);
           alert("Login Failed")
+          setcommonError("")
         }
         
       }  
     }else{
-      alert("Please enter all feilds and veriy if Phone number enter correctly.")
+      alert("Please Enter/Select all Feilds and check if data enter correctly.")
+      setcommonError("")
     }
   }
 
     function registerhandle(){
-      if(aadhar && password){
+      setcommonError("")
+      if(phone && username && email && aadhar && address && password && !commonErrorS){
         register(phone, username, email,"user",aadhar,address,password);
         clear();
         setShowModal2(false)
         
       }else{
-        alert("Failed to register")
+        alert("Failed to register. Please enter all Fields and correctly.")
       }
     }
 
@@ -146,7 +240,7 @@ const calculateTotalPrice = () => {
       </ul>
 
             {props.currentAccount ? <> 
-        <Link class="nav-link btn btn-outline-info mr-2" to="/">Home </Link>
+       
 
         <Link class="nav-link btn btn-outline-info mr-2" to="/" data-toggle="modal" data-target="#cart">My Cart {props.cartItems.length} </Link>
         
@@ -173,39 +267,40 @@ const calculateTotalPrice = () => {
 
         <div className="modal-header bgd">
           <h5 className="modal-title" id="exampleModalLabel">Register</h5>
+          <strong className='text-center ml-3 text-danger'>{commonError}</strong>
           <button type="button" className="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div className="modal-body">
-        <form className="needs-validation" id="myForm" noValidate >
+        <form className="needs-validation" id="myForm" Validate >
 
     
 
           <div className="form-group">
             <label for="username" className="col-form-label">Full Name :</label>
-            <input type="text" value={username} onChange={(e) => setusername(e.target.value)} className="form-control" id="username" required />
+            <input type="text" value={username} onChange={(e) => setusername2(e.target.value)} className="form-control" id="username" required />
           </div>
           <div className="form-group">
             <label for="phone" className="col-form-label">Phone Number :</label>
-            <input type="text" value={phone} onChange={(e) => setphone(e.target.value)} className="form-control" id="phone" required />
+            <input type="text" value={phone} onChange={(e) => setphone2(e.target.value)} className="form-control" id="phone" required />
           </div>
           <div className="form-group">
             <label for="email" className="col-form-label">Email :</label>
-            <input type="text" value={email} onChange={(e) => setemail(e.target.value)}  className="form-control" id="email" required />
+            <input type="text" value={email} onChange={(e) => setemail2(e.target.value)}  className="form-control" id="email" required />
           </div>
 
     
 
           <div className="form-group">
             <label for="address" className="col-form-label">Full Address :</label>
-            <textarea type="text" value={address} onChange={(e) => setaddress(e.target.value)}  className="form-control" id="address" required />
+            <textarea type="text" value={address} onChange={(e) => setaddress2(e.target.value)}  className="form-control" id="address" required />
           </div>
 
         
           <div className="form-group">
             <label for="password" className="col-form-label">Password :</label>
-            <input type="password" value={password} onChange={(e) => setpassword(e.target.value)}  className="form-control" id="password" required />
+            <input type="password" value={password} onChange={(e) => setpassword2(e.target.value)}  className="form-control" id="password" required />
           </div>
      
         </form>
@@ -223,30 +318,31 @@ const calculateTotalPrice = () => {
       <div className="modal-content">
         <div className="modal-header bgd">
           <h5 className="modal-title" id="exampleModalLabel">Login</h5>
+          <strong className='text-center ml-3 text-danger'>{commonError}</strong>
           <button type="button" className="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div className="modal-body">
-        <form className="needs-validation" id="myForm" noValidate>
+        <form className="needs-validation" id="myForm" Validate>
 
         <div className="form-check form-check-inline">
-        <input className="form-check-input" value="user" onChange={(e) => setusertype(e.target.value)} type="radio" name="inlineRadioOptions" id="inlineRadio1" />
+        <input className="form-check-input" value="user" onChange={(e) => setusertype(e.target.value)} type="radio" name="inlineRadioOptions" id="inlineRadio1" required />
         <label className="form-check-label" for="inlineRadio1">Shopper</label>
       </div>
 
       <div className="form-check form-check-inline">
-        <input className="form-check-input" value="admin" onChange={(e) => setusertype(e.target.value)} type="radio" name="inlineRadioOptions" id="inlineRadio2" />
+        <input className="form-check-input" value="admin" onChange={(e) => setusertype(e.target.value)} type="radio" name="inlineRadioOptions" id="inlineRadio2" required />
         <label className="form-check-label" for="inlineRadio2">Admin</label>
       </div>
           
           <div className="form-group">
             <label for="aadhar" className="col-form-label">Phone Number :</label>
-            <input type="text" value={phone} onChange={(e) => setphone(e.target.value)}  className="form-control" id="phone" required/>
+            <input type="text" value={phone} onChange={(e) => setphone2(e.target.value)}  className="form-control" id="phone" required/>
           </div>
           <div className="form-group">
             <label for="password" className="col-form-label">Password :</label>
-            <input type="password" value={password} onChange={(e) => setpassword(e.target.value)}  className="form-control" id="password" required/>
+            <input type="password" value={password} onChange={(e) => setpassword2(e.target.value)}  className="form-control" id="password" required/>
           </div>
      
         </form>
@@ -270,6 +366,7 @@ const calculateTotalPrice = () => {
             <h5 className="modal-title" id="exampleModalLabel">
               Your Cart / Place Order
             </h5>
+            <strong className='text-center ml-3 text-danger'>{commonError}</strong>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -292,7 +389,9 @@ const calculateTotalPrice = () => {
               </label>
               <input
                 type="text"
-                value={phonec}
+                value={phone}
+                onChange={(e) => setphone2(e.target.value)}
+                //onChange={setphone2}
                 className="form-control"
                 id="recipient-name"
               />
@@ -305,7 +404,8 @@ const calculateTotalPrice = () => {
                 className="form-control"
                 id="message-text"
                 value={address}
-                onChange={handleAddressChange}
+                onChange={(e) => setaddress2(e.target.value)}
+               // onChange={setaadhar2}
               ></textarea>
             </div>
             <div className="form-group">

@@ -192,7 +192,7 @@ function UserHome(props) {
 
       {isCameraOn && (
 
-      <div className="text-center mt-3 mb-3">
+      <div style={{zIndex:9999,position: "absolute",marginLeft:"50%"}} className="text-center mt-3 mb-3">
         <button onClick={() => handleMove("up")}>
           <FontAwesomeIcon icon={faArrowUp} />
         </button>
@@ -214,7 +214,7 @@ function UserHome(props) {
       </div>
       )}
 
-      <div className="container-fluid">
+      <div className="container-fluid" style={{marginTop:"60px"}}>
         <div className="form-row align-items-center alert alert-dark">
           <div className="col-auto">
             <label htmlFor="productNameFilter" style={{ fontSize: "1.2em" }}>
